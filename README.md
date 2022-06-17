@@ -7,4 +7,8 @@ Rust. You can get the book [here][introduction-to-algorithms]. The third
 edition would likely be cheaper but the authors state the fourth edition has
 significant improvements.
 
+## Rust Notes
+
+- Used version 1.61 while working on this project, i.e. `rustup default 1.61`
+
 [introduction-to-algorithms-4]: https://mitpress.mit.edu/books/introduction-algorithms-fourth-edition
