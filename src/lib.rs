@@ -1,5 +1,5 @@
-mod chapters;
+pub mod chapters;
 
-fn main() {
+pub fn main() {
     println!("Introduction to Algorithms!");
 }
