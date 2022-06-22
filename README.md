@@ -11,8 +11,4 @@ significant improvements.
 
 - Used version 1.61 while working on this project, i.e. `rustup default 1.61`
 
-## Next steps
-
-- Each chapter is a module with test directory
-
 [introduction-to-algorithms-4]: https://mitpress.mit.edu/books/introduction-algorithms-fourth-edition
