@@ -7,13 +7,10 @@ edition = "2021"
 
 [dependencies]
 
-[dev-dependencies]
-criterion = "0.3"
-
-# [[features]]
-# html_reports = []
+[dev-dependencies.criterion]
+version = "0.3"
+features = [ "html_reports" ]
 
 [[bench]]
 name = "benchmarks"
 harness = false
-
