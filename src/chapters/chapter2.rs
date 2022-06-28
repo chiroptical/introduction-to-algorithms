@@ -102,7 +102,7 @@ pub fn linear_search<T: Eq>(x: T, a: &[T]) -> Option<usize> {
 }
 
 // Exercise 2.1-5
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, PartialEq, Debug)]
 pub enum Bit {
     Zero,
     One,
@@ -160,10 +160,10 @@ fn add_bit(x: BitAdd, y: Bit) -> BitAdd {
 // TODO: Test this
 pub fn add_binary_integers(n: usize, a: Vec<Bit>, b: Vec<Bit>) -> Option<Vec<Bit>> {
     use Bit::*;
-    if n == 0 || a.len() != n || b.len() != n {
+    if n == 0 || a.len() + 1 != n || b.len() + 1 != n {
         return None;
     }
-    let mut ret: Vec<Bit> = Vec::with_capacity(n);
+    let mut ret: Vec<Bit> = vec![Zero; n];
     let mut _carry = Zero;
     for i in (0..n - 1).rev() {
         let BitAdd { carry, result } = add_bit(
@@ -178,4 +178,29 @@ pub fn add_binary_integers(n: usize, a: Vec<Bit>, b: Vec<Bit>) -> Option<Vec<Bit
     }
     ret[0] = _carry;
     Some(ret)
+}
+
+// TODO:
+// - Finish this function
+// - Test this function
+fn minimum_index<T: Ord>(a: &[T]) -> Option<usize> {
+    Some(0)
+}
+
+// TODO:
+// - Test this function
+pub fn selection_sort<T: Ord + Copy>(a: &mut [T]) {
+    for i in 0..a.len() {
+        let min_index = minimum_index(&a[i..]);
+        match min_index {
+            Some(x) => {
+                let swap = a[i];
+                a[i] = a[x];
+                a[x] = swap;
+            }
+            None => {
+                panic!("This probably shouldn't happen...")
+            }
+        }
+    }
 }

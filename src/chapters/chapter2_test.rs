@@ -45,4 +45,23 @@ mod chapter2_test {
         let input = vec![5, 2, 4, 6, 1, 3];
         assert_eq!(linear_search(10, &input), None);
     }
+
+    #[test]
+    fn add_binary_integers_example_one() {
+        use Bit::*;
+        let a = vec![Zero, One, One, One];
+        let b = vec![One, One, One, Zero];
+        let c = vec![One, Zero, One, Zero, One];
+        assert_eq!(add_binary_integers(c.len(), a, b), Some(c));
+    }
+
+    #[test]
+    fn add_binary_integers_example_two() {
+        use Bit::*;
+        // 10101010 + 11001100 = 101110110
+        let a = vec![One, Zero, One, Zero, One, Zero, One, Zero];
+        let b = vec![One, One, Zero, Zero, One, One, Zero, Zero];
+        let c = vec![One, Zero, One, One, One, Zero, One, One, Zero];
+        assert_eq!(add_binary_integers(c.len(), a, b), Some(c));
+    }
 }
