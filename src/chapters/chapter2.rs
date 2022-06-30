@@ -180,23 +180,41 @@ pub fn add_binary_integers(n: usize, a: Vec<Bit>, b: Vec<Bit>) -> Option<Vec<Bit
     Some(ret)
 }
 
-// TODO:
-// - Finish this function
-// - Test this function
-fn minimum_index<T: Ord>(a: &[T]) -> Option<usize> {
-    Some(0)
+pub fn minimum_index<T: Copy + Ord>(a: &[T]) -> Option<usize> {
+    let mut minimum = None;
+    let mut index = None;
+    for i in 0..a.len() {
+        if i == 0 {
+            minimum = Some(a[i]);
+            index = Some(i);
+        } else {
+            if Some(a[i]) < minimum {
+                minimum = Some(a[i]);
+                index = Some(i);
+            }
+        }
+    }
+    index
 }
 
-// TODO:
-// - Test this function
+// Exercise 2.2-2
+// Loop invariant: selection_sort(a[0..i]) ~ a[0..i]
 pub fn selection_sort<T: Ord + Copy>(a: &mut [T]) {
-    for i in 0..a.len() {
-        let min_index = minimum_index(&a[i..]);
+    // This allows us to write `a.len() - 1` below and the algorithm still works for an empty list
+    if a.len() == 0 {
+        return;
+    }
+    for i in 0..a.len() - 1 {
+        // n - 1, linear in n
+        let min_index = minimum_index(&a[i..]); // n - i, linear in n
         match min_index {
             Some(x) => {
-                let swap = a[i];
-                a[i] = a[x];
-                a[x] = swap;
+                let sub_to_arr_index = x + i;
+                if sub_to_arr_index != i {
+                    let swap = a[i];
+                    a[i] = a[sub_to_arr_index];
+                    a[sub_to_arr_index] = swap;
+                }
             }
             None => {
                 panic!("This probably shouldn't happen...")

@@ -64,4 +64,46 @@ mod chapter2_test {
         let c = vec![One, Zero, One, One, One, Zero, One, One, Zero];
         assert_eq!(add_binary_integers(c.len(), a, b), Some(c));
     }
+
+    #[test]
+    fn minimum_index_with_empty_array_returns_none() {
+        let a: Vec<u8> = vec![];
+        assert_eq!(minimum_index(&a), None);
+    }
+
+    #[test]
+    fn minimum_index_works_with_one_element() {
+        let a: Vec<u8> = vec![1];
+        assert_eq!(minimum_index(&a), Some(0));
+    }
+
+    #[test]
+    fn minimum_index_works() {
+        let a: Vec<u8> = vec![4, 3, 2, 1];
+        assert_eq!(minimum_index(&a), Some(3));
+    }
+
+    #[test]
+    fn selection_sort_with_empty_array_works() {
+        let mut input: Vec<u8> = vec![];
+        let output: Vec<u8> = vec![];
+        selection_sort(&mut input);
+        assert_eq!(input, output);
+    }
+
+    #[test]
+    fn selection_sort_with_one_element_works() {
+        let mut input = vec![1];
+        let output = vec![1];
+        selection_sort(&mut input);
+        assert_eq!(input, output);
+    }
+
+    #[test]
+    fn selection_sort_works() {
+        let mut input = vec![5, 2, 4, 6, 1, 3];
+        let output = vec![1, 2, 3, 4, 5, 6];
+        selection_sort(&mut input);
+        assert_eq!(input, output);
+    }
 }

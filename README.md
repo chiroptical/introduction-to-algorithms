@@ -15,3 +15,4 @@ significant improvements.
 
 [introduction-to-algorithms-4]: https://mitpress.mit.edu/books/introduction-algorithms-fourth-edition
 [criterion]: https://github.com/bheisler/criterion.rs#criterionrs-extensions
+[selected-solutions]: https://mitp-content-server.mit.edu/books/content/sectbyfn/books_pres_0/11599/selected-solutions.pdf
