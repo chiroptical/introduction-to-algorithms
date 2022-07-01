@@ -106,4 +106,19 @@ mod chapter2_test {
         selection_sort(&mut input);
         assert_eq!(input, output);
     }
+
+    #[test]
+    fn merge_with_zero_elements() {
+        let input: Vec<u8> = vec![];
+        assert_eq!(merge(&input, 0, 0, 0), Some(input));
+    }
+
+    #[test]
+    fn merge_with_one_element() {
+        let input = vec![1];
+        assert_eq!(merge(&input, 0, 0, 0), Some(input));
+    }
+
+    // TODO: Write some bounds check tests
+    // TODO: Write some merge tests
 }

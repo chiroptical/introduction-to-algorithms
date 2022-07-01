@@ -222,3 +222,42 @@ pub fn selection_sort<T: Ord + Copy>(a: &mut [T]) {
         }
     }
 }
+
+// TODO: Write merge using the book's style
+pub fn merge<T: Copy + Ord>(a: &Vec<T>, p: usize, q: usize, r: usize) -> Option<Vec<T>> {
+    // An element with 0 or 1 elements is already merged
+    if a.len() == 0 || a.len() == 1 {
+        return Some(a.to_owned());
+    }
+    // Bounds checking
+    if a.len() < r || a.len() > p || p <= q || q < r {
+        return None;
+    }
+    let mut result = Vec::with_capacity(r - p);
+
+    fn go<T: Copy + Ord>(res: &mut Vec<T>, l: &[T], r: &[T]) {
+        match (l, r) {
+            ([], []) => (),
+            ([x, xs @ ..], []) => {
+                res.push(*x);
+                go(res, &xs, &[]);
+            }
+            ([], [y, ys @ ..]) => {
+                res.push(*y);
+                go(res, &[], &ys);
+            }
+            ([x, xs @ ..], [y, ys @ ..]) => {
+                if x <= y {
+                    res.push(*x);
+                    go(res, &xs, &r);
+                } else {
+                    res.push(*y);
+                    go(res, &l, &ys);
+                }
+            }
+        }
+    }
+
+    go(&mut result, &a[p..q], &a[q + 1..r]);
+    Some(result)
+}
