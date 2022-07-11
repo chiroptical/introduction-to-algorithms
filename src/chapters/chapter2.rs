@@ -223,14 +223,13 @@ pub fn selection_sort<T: Ord + Copy>(a: &mut [T]) {
     }
 }
 
-// TODO: Write merge using the book's style
-pub fn merge<T: Copy + Ord>(a: &Vec<T>, p: usize, q: usize, r: usize) -> Option<Vec<T>> {
+pub fn merge<T: Copy + Ord>(a: &[T], p: usize, q: usize, r: usize) -> Option<Vec<T>> {
     // An element with 0 or 1 elements is already merged
     if a.len() == 0 || a.len() == 1 {
         return Some(a.to_owned());
     }
     // Bounds checking
-    if a.len() < r || a.len() > p || p <= q || q < r {
+    if !(a.len() >= r + 1 && a.len() > p && p <= q && q < r) {
         return None;
     }
     let mut result = Vec::with_capacity(r - p);
@@ -258,6 +257,50 @@ pub fn merge<T: Copy + Ord>(a: &Vec<T>, p: usize, q: usize, r: usize) -> Option<
         }
     }
 
-    go(&mut result, &a[p..q], &a[q + 1..r]);
+    go(&mut result, &a[p..q + 1], &a[q + 1..r + 1]);
     Some(result)
 }
+
+#[derive(Debug, PartialEq)]
+pub enum MergeSortFailure {
+    LengthZeroOrOne,
+    BoundsChecks(usize, usize, usize),
+    Merge,
+}
+
+// TODO: See `merge_check`
+pub fn merge_sort<T: Copy + Ord>(a: &mut [T], p: usize, r: usize) -> Result<(), MergeSortFailure> {
+    // termination
+    if p >= r {
+        return Ok(());
+    }
+
+    // An element with 0 or 1 elements is already merged
+    if a.len() == 0 || a.len() == 1 {
+        return Err(MergeSortFailure::LengthZeroOrOne);
+    }
+
+    // Bounds checking
+    if !(a.len() >= r + 1 && a.len() > p && p < r) {
+        return Err(MergeSortFailure::BoundsChecks(a.len(), p, r));
+    }
+
+    // in theory, this is floor division
+    let q: usize = (p + r) / 2;
+
+    merge_sort(a, p, q)?;
+    merge_sort(a, p + 1, r)?;
+    match merge(a, p, q, r) {
+        Some(x) => {
+            for (i, v) in x.iter().enumerate() {
+                a[p + i] = *v;
+            }
+        }
+        None => {
+            return Err(MergeSortFailure::Merge);
+        }
+    }
+    Ok(())
+}
+
+// TODO: Write merge using the book's style

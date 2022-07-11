@@ -119,6 +119,59 @@ mod chapter2_test {
         assert_eq!(merge(&input, 0, 0, 0), Some(input));
     }
 
-    // TODO: Write some bounds check tests
-    // TODO: Write some merge tests
+    #[test]
+    fn merge_out_of_bounds_r_greater_than_length() {
+        let input = vec![1, 2, 3];
+        assert_eq!(merge(&input, 0, 0, 6), None);
+    }
+
+    #[test]
+    fn merge_out_of_bounds_q_equals_r() {
+        let input = vec![1, 2, 3];
+        assert_eq!(merge(&input, 0, 2, 2), None);
+    }
+
+    #[test]
+    fn merge_out_of_bounds_out_of_order() {
+        let input = vec![1, 2, 3];
+        assert_eq!(merge(&input, 2, 1, 0), None);
+    }
+
+    #[test]
+    fn merge_basic() {
+        let input = vec![1, 3, 5, 2, 4, 6];
+        let output = vec![1, 2, 3, 4, 5, 6];
+        assert_eq!(merge(&input, 0, 2, 5), Some(output));
+    }
+
+    #[test]
+    fn merge_non_ordered() {
+        let input = vec![3, 2, 1, 6, 5, 4];
+        assert_eq!(merge(&input, 0, 2, 5), Some(input));
+    }
+
+    #[test]
+    fn merge_presorted() {
+        let input = vec![1, 2, 3, 4, 5, 6];
+        assert_eq!(merge(&input, 0, 2, 5), Some(input));
+    }
+
+    #[test]
+    fn merge_sort_basic() {
+        let mut input = vec![1, 7, 9, 8, 3, 4, 8, 2, 1, 2, 8, 2, 3, 7];
+        let output = vec![1, 1, 2, 2, 2, 3, 3, 4, 7, 7, 8, 8, 8, 9];
+        let r = input.len() - 1;
+        assert_eq!(merge_sort(&mut input, 0, r), Ok(()));
+        assert_eq!(input, output);
+    }
+
+    // TODO: Something is going on here...
+    // Is it failing the precondition?
+    #[test]
+    fn merge_check() {
+        let input = vec![1, 2, 2, 3, 3, 4, 2, 1, 7, 7, 8, 8, 8, 9];
+        let output = vec![1, 1, 2, 2, 2, 3, 3, 4, 7, 7, 8, 8, 8, 9];
+        let r = input.len() - 1;
+        assert_eq!(merge(&input, 0, 6, r), Some(output));
+    }
 }
