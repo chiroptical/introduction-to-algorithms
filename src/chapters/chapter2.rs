@@ -4,7 +4,6 @@ use std::fmt::Debug;
 #[path = "chapter2_test.rs"]
 mod chapter2_test;
 
-//
 // - You can't use slices to mutate arrays, you should use `&mut Vec<T>`
 // - `T` is almost always going to go need `Ord + Copy` for sorting
 pub fn insertion_sort<T: Ord + Copy>(a: &mut [T]) {
@@ -268,8 +267,11 @@ pub enum MergeSortFailure {
     Merge,
 }
 
-// TODO: See `merge_check`
-pub fn merge_sort<T: Copy + Ord>(a: &mut [T], p: usize, r: usize) -> Result<(), MergeSortFailure> {
+pub fn merge_sort<T: Copy + Ord + Debug>(
+    a: &mut [T],
+    p: usize,
+    r: usize,
+) -> Result<(), MergeSortFailure> {
     // termination
     if p >= r {
         return Ok(());
@@ -288,8 +290,11 @@ pub fn merge_sort<T: Copy + Ord>(a: &mut [T], p: usize, r: usize) -> Result<(), 
     // in theory, this is floor division
     let q: usize = (p + r) / 2;
 
+    // recursively sort subarrays
     merge_sort(a, p, q)?;
-    merge_sort(a, p + 1, r)?;
+    merge_sort(a, q + 1, r)?;
+
+    // merge all subarrays until sorted
     match merge(a, p, q, r) {
         Some(x) => {
             for (i, v) in x.iter().enumerate() {
@@ -303,4 +308,4 @@ pub fn merge_sort<T: Copy + Ord>(a: &mut [T], p: usize, r: usize) -> Result<(), 
     Ok(())
 }
 
-// TODO: Write merge using the book's style
+// TODO: Go through `cargo clippy` comments

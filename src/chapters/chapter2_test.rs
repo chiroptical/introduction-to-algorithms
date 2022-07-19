@@ -1,8 +1,8 @@
 #[cfg(test)]
 mod chapter2_test {
     use super::super::*;
+    use quickcheck::quickcheck;
 
-    // tests go here...
     #[test]
     fn insertion_sort_works() {
         let mut input = vec![5, 2, 4, 6, 1, 3];
@@ -157,21 +157,65 @@ mod chapter2_test {
     }
 
     #[test]
+    fn merge_larger_test() {
+        let input = vec![1, 2, 2, 2, 3, 3, 4, 1, 7, 7, 8, 8, 8, 9];
+        let mut output = input.to_owned();
+        output.sort();
+        let r = input.len() - 1;
+        assert_eq!(merge(&input, 0, 6, r), Some(output));
+    }
+
+    #[test]
     fn merge_sort_basic() {
         let mut input = vec![1, 7, 9, 8, 3, 4, 8, 2, 1, 2, 8, 2, 3, 7];
-        let output = vec![1, 1, 2, 2, 2, 3, 3, 4, 7, 7, 8, 8, 8, 9];
+        let mut output = input.to_owned();
+        output.sort();
         let r = input.len() - 1;
         assert_eq!(merge_sort(&mut input, 0, r), Ok(()));
         assert_eq!(input, output);
     }
+    #[cfg(test)]
+    quickcheck! {
+        fn merge_prop(xs: Vec<u32>) -> bool {
+            // Generate two sorted subarrays to merge
+            let mut ys = xs.to_owned();
+            let mut zs = xs.to_owned();
+            ys.sort();
+            zs.sort();
 
-    // TODO: Something is going on here...
-    // Is it failing the precondition?
-    #[test]
-    fn merge_check() {
-        let input = vec![1, 2, 2, 3, 3, 4, 2, 1, 7, 7, 8, 8, 8, 9];
-        let output = vec![1, 1, 2, 2, 2, 3, 3, 4, 7, 7, 8, 8, 8, 9];
-        let r = input.len() - 1;
-        assert_eq!(merge(&input, 0, 6, r), Some(output));
+            // The input is just the sorted input using Rust
+            let mut input = ys.to_owned();
+            input.extend(zs.to_owned());
+            println!("input: {:?}", input);
+
+            // The reference is just the sorted input using Rust
+            let mut reference = input.to_owned();
+            reference.sort();
+            println!("reference: {:?}", reference);
+
+            // merge sort should work and produce a sorted list
+            if input.len() != 0 {
+                let r = input.len() - 1;
+                merge(&mut input, 0, xs.len() - 1, r) == Some(reference)
+            }
+            // Unsure if we can throw away this test case more gracefully
+            else {
+                true
+            }
+        }
+    }
+
+    #[cfg(test)]
+    quickcheck! {
+        fn merge_sort_prop(xs: Vec<u32>) -> bool {
+            // A mutable copy of our input to run through merge sort
+            let mut input = xs.to_owned();
+            // The reference is just the sorted input using Rust
+            let mut reference = xs.to_owned();
+            reference.sort();
+            // merge sort should work and produce a sorted list
+            let r = if input.len() == 0 {0} else {input.len() - 1};
+            merge_sort(&mut input, 0, r).is_ok() && reference == input
+        }
     }
 }
